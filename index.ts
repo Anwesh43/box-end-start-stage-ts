@@ -195,3 +195,25 @@ class BoxEndStart {
         this.curr.startUpdating(cb)
     }
 }
+
+class Renderer {
+
+    bes : BoxEndStart = new BoxEndStart()
+    animator : Animator = new Animator()
+
+    render(context : CanvasRenderingContext2D) {
+        this.bes.draw(context)
+    }
+
+    handleTap(cb : Function) {
+        this.bes.startUpdating(() => {
+            this.animator.start(() => {
+                cb()
+                this.bes.update(() => {
+                    this.animator.stop()
+                    cb()
+                })
+            })
+        })
+    }
+}
